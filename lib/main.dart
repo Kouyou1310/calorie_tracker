@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Test Test'),
+        title: const Text('Calorie Tracker'),
         elevation: 12,
         scrolledUnderElevation: 4,
         centerTitle: true,
@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
           BottomNavigationBarItem(
             icon: Icon(Icons.add_circle_outlined),
-            label: 'Add',
+            label: 'Add Meal',
           ),
 
           BottomNavigationBarItem(
