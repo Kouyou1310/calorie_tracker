@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 7, 187, 181),
+          seedColor: const Color.fromARGB(255, 47, 143, 103),
         ),
       ),
       home: const MyHomePage(),
@@ -52,6 +52,11 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Calorie Tracker'),
+        leading: IconButton(
+          onPressed: () {
+
+          },
+          icon: Icon(Icons.access_alarm)),
         elevation: 12,
         scrolledUnderElevation: 4,
         centerTitle: true,

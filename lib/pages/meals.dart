@@ -19,32 +19,47 @@ class _MealsPageState extends State<MealsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ListView.separated(
-          padding: const EdgeInsets.all(16),
-          itemCount: mealList.length,
-          itemBuilder:(context, int index) {
-            return Container(
-              height: 50,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(200, 167, 195, 209),
-                border: Border.all(
-                  color: const Color.fromARGB(200, 167, 195, 209),
-                  width: 3.0
+    return Scaffold(
+      body: Center( 
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.all(16),
+                itemCount: mealList.length,
+                itemBuilder:(context, int index) {
+                  return Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 68, 64, 84),
+                      border: Border.all(
+                        color: const Color.fromARGB(255, 68, 64, 84),
+                        width: 3.0
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                      boxShadow: [BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        offset: Offset(4, 6),
+                        blurRadius: 10,
+                        spreadRadius: 2,
+                      )]
+                    ),
+                    child: Text(mealList[index].name, style: TextStyle(fontSize: 26.0, color: Color.fromARGB(255, 255, 255, 255))),
+                  );
+                },
+                separatorBuilder: (context, index) => const SizedBox(height: 22.0),
                 ),
-                borderRadius: BorderRadius.circular(10.0),
-                boxShadow: [BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  offset: Offset(4, 6),
-                  blurRadius: 10,
-                  spreadRadius: 2,
-                )]
-              ),
-              child: Text(mealList[index].name, style: TextStyle(fontSize: 26.0)),
-            );
-          },
-          separatorBuilder: (context, index) => const SizedBox(height: 16.0),
-        ),
+            ),
+            IconButton(icon: Icon(Icons.add_circle_outlined, size: 64,),
+              onPressed: () {
+                
+              },
+              color: const Color.fromARGB(200, 47, 36, 58)) 
+          ]
+        )
+      )
     );
   }
 }
