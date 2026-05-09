@@ -52,6 +52,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Calorie Tracker'),
+        backgroundColor: const Color.fromARGB(255, 47, 143, 103),
+        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
         leading: IconButton(
           onPressed: () {
 

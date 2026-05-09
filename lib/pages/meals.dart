@@ -40,13 +40,13 @@ class _MealsPageState extends State<MealsPage> {
                       ),
                       borderRadius: BorderRadius.circular(10.0),
                       boxShadow: [BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
+                        color: Colors.black.withOpacity(0.3),
                         offset: Offset(4, 6),
                         blurRadius: 10,
                         spreadRadius: 2,
                       )]
                     ),
-                    child: Text(mealList[index].name, style: TextStyle(fontSize: 26.0, color: Color.fromARGB(255, 255, 255, 255))),
+                    child: Text(mealList[index].name, style: TextStyle(fontSize: 26.0, color: const Color.fromARGB(255, 255, 255, 255))),
                   );
                 },
                 separatorBuilder: (context, index) => const SizedBox(height: 22.0),
@@ -56,7 +56,7 @@ class _MealsPageState extends State<MealsPage> {
               onPressed: () {
                 
               },
-              color: const Color.fromARGB(200, 47, 36, 58)) 
+              color: const Color.fromARGB(255, 47, 36, 58)) 
           ]
         )
       )
