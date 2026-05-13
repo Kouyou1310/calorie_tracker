@@ -42,6 +42,13 @@ class _MealsPageState extends State<MealsPage> {
     return mealList;
   }
 
+  List<Meals> removeItem(Meals meal) {
+    setState(() {
+      mealList.remove(meal);
+    });
+    return mealList;
+  }
+
   //dismiss Dialog popup
   void _dismissDialog() {
     Navigator.pop(context);
@@ -69,18 +76,34 @@ class _MealsPageState extends State<MealsPage> {
                           context: context,
                           builder: (context) => AlertDialog(
                             title: Text(mealList[index].name),
-
                             scrollable: true,
                             content: Column(
                               mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('${mealList[index].calorie}'),
                                 Text(
-                                  '${mealList[index].fat}',
-                                  textAlign: TextAlign.left,
+                                  '${mealList[index].calorie} Calorie',
+                                  style: TextStyle(fontSize: 18),
                                 ),
-                                Text('${mealList[index].protein}'),
-                                Text('${mealList[index].carbs}'),
+                                Text(
+                                  '${mealList[index].fat} Fat',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                Text(
+                                  '${mealList[index].protein} Protein',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                Text(
+                                  '${mealList[index].carbs} Carbs',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    removeItem(mealList[index]);
+                                    _dismissDialog();
+                                  },
+                                  child: Text('Delete'),
+                                ),
                               ],
                             ),
                           ),
@@ -130,7 +153,6 @@ class _MealsPageState extends State<MealsPage> {
                           ),
                           onChanged: (String value) {
                             tempMeal.name = value;
-                            print(tempMeal.name);
                           },
                         ),
                         TextField(
@@ -144,7 +166,6 @@ class _MealsPageState extends State<MealsPage> {
                           onChanged: (String value) {
                             int? parsedInput = int.tryParse(value);
                             tempMeal.calorie = parsedInput;
-                            print(tempMeal.calorie);
                           },
                         ),
                         TextField(
@@ -158,7 +179,6 @@ class _MealsPageState extends State<MealsPage> {
                           onChanged: (String value) {
                             double? parsedInput = double.tryParse(value);
                             tempMeal.fat = parsedInput;
-                            print(tempMeal.fat);
                           },
                         ),
                         TextField(
@@ -172,7 +192,6 @@ class _MealsPageState extends State<MealsPage> {
                           onChanged: (String value) {
                             double? parsedInput = double.tryParse(value);
                             tempMeal.protein = parsedInput;
-                            print(tempMeal.protein);
                           },
                         ),
                         TextField(
@@ -186,7 +205,6 @@ class _MealsPageState extends State<MealsPage> {
                           onChanged: (String value) {
                             double? parsedInput = double.tryParse(value);
                             tempMeal.carbs = parsedInput;
-                            print(tempMeal.carbs);
                           },
                         ),
                         Row(
