@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,29 +11,13 @@ class MealsPage extends StatefulWidget {
 
 class _MealsPageState extends State<MealsPage> {
   List<Meals> mealList = [
-    Meals(name: 'doener(chicken)', calorie: 179, fat: 8, protein: 9, carbs: 5),
-    Meals(name: 'pizza salami', calorie: 270, fat: 13, protein: 9, carbs: 28),
     Meals(
-      name: 'schnitzel and fries',
-      calorie: 220,
-      fat: 45,
-      protein: 45,
-      carbs: 113,
-    ),
-    Meals(
-      name: 'oat flakes',
-      calorie: 168,
-      fat: 4.5,
-      protein: 10.4,
-      carbs: 20.9,
-    ),
-    Meals(
-      name: 'Pasta Aglio e Olio',
-      calorie: 276,
-      fat: 10,
-      protein: 7.5,
-      carbs: 39,
-    ),
+      name: 'doener(chicken)', 
+      calorie: 179, 
+      fat: 8, 
+      protein: 9, 
+      carbs: 5
+    )
   ];
 
   //add meal to existing MealList
@@ -43,6 +28,7 @@ class _MealsPageState extends State<MealsPage> {
     return mealList;
   }
 
+  //remove meal from MealList
   List<Meals> removeItem(Meals meal) {
     setState(() {
       mealList.remove(meal);
@@ -53,6 +39,26 @@ class _MealsPageState extends State<MealsPage> {
   //dismiss Dialog popup
   void _dismissDialog() {
     Navigator.pop(context);
+  }
+
+  //sharedpref load
+  Future<List<Meals>> getMealList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? jsonString = prefs.getString('meal_keys');
+
+    if (jsonString != null) {
+      List<dynamic> jsonList = jsonDecode(jsonString);
+      setState(() {
+        mealList = jsonList.map((item) => Meals.fromJSON(item)).toList();
+      });
+    }
+    return [];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getMealList();
   }
 
   @override
@@ -99,8 +105,16 @@ class _MealsPageState extends State<MealsPage> {
                                   style: TextStyle(fontSize: 18),
                                 ),
                                 TextButton(
-                                  onPressed: () {
-                                    removeItem(mealList[index]);
+                                  onPressed: () async {
+                                    setState(() {
+                                      //remove from list
+                                      removeItem(mealList[index]);
+                                    });
+                                    //save changed list
+                                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                                    String jsonString = jsonEncode(mealList.map((m) => m.toJson()).toList());
+                                    await prefs.setString('meal_keys', jsonString);
+
                                     _dismissDialog();
                                   },
                                   child: Text('Delete'),
@@ -217,13 +231,22 @@ class _MealsPageState extends State<MealsPage> {
                               child: Text('Cancel'),
                             ),
                             TextButton(
-                              onPressed: () {
-                                if (tempMeal.name.isNotEmpty &&
-                                    tempMeal.calorie != 0) {
+                              onPressed: () async{
+                                if (tempMeal.name.isNotEmpty && tempMeal.calorie != 0) {
+                                  //save in List
                                   updateList(tempMeal);
+
+                                  //save in SharedPref
+                                  final SharedPreferences prefs = await SharedPreferences.getInstance();
+                                  String jsonString = jsonEncode(mealList.map((m) => m.toJson()).toList());
+                                  await prefs.setString('meal_keys', jsonString);
+
                                   _dismissDialog();
                                 } else {
-                                  return;
+                                   //error notfication
+                                   ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('Please add Name and calorie'))
+                                   );
                                 }
                               },
                               child: Text('Save'),
@@ -258,4 +281,22 @@ class Meals {
     required this.protein,
     required this.carbs,
   });
+
+  //JSON to meal-obj
+  factory Meals.fromJSON(Map<String, dynamic> json) => Meals(
+    name: json['name'], 
+    calorie: json['calorie'], 
+    fat: json['fat'], 
+    protein: json['protein'], 
+    carbs: json['carbs']
+  );
+
+  //Meal-obj to JSON
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'calorie': calorie,
+    'fat': fat, 
+    'protein': protein,
+    'carbs': carbs
+  };
 }
